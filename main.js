@@ -30,21 +30,27 @@ function operate(operator, a, b) {
             break;      
     }
     displayValue = result;
+    numbers.push(result);
+    n++;
     updateScreen();
 }
 
 let displayValue = "", historyValue = "";
-let operator = "";
+let operator;
 let numbers = [], n = 0;
-let result = 0;
+let result, tmp;
 
 function storeDisplayValue(value) {
     if(isNaN(value) && value !== "."){
         numbers.push(+displayValue);
         n++;
         if(value === "=") {
-            console.log(operator);
-            operate(operator, numbers[n-2], numbers[n-1])
+            operate(operator, numbers[n-2], numbers[n-1]);
+            operator = "";
+        } else if (operator) {
+            historyValue = numbers[n-1];
+            operate(operator, numbers[n-2], numbers[n-1]);
+            operator = value;
         }else {
             operator = value;
             historyValue = numbers[n-1];
@@ -52,10 +58,14 @@ function storeDisplayValue(value) {
             displayValue = "";
         }
     } else {
+        if(result) {
+            displayValue = "";
+            result = false;
+        } 
         displayValue += `${value}`;
         updateScreen();
-        console.log(displayValue);
     }
+    console.log(displayValue);
 
 }
 
@@ -66,6 +76,9 @@ function clearScreen() {
     history.innerHTML = "";
     displayValue = "";
     historyValue = "";
+    numbers = [];
+    n = 0;
+    operator = "";
 }
 
 function deleteScreen() {
