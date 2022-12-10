@@ -11,6 +11,7 @@ function multiply(a, b){
 }
 
 function divide(a, b){
+    if (b === 0) return "ERROR 2";
     return a / b;
 }
 
@@ -30,6 +31,7 @@ function operate(operator, a, b) {
             break;      
     }
     displayValue = result;
+    historyValue = result;
     numbers.push(result);
     n++;
     updateScreen();
@@ -42,9 +44,11 @@ let result, tmp;
 
 function storeDisplayValue(value) {
     if(isNaN(value) && value !== "."){
+        
         numbers.push(+displayValue);
         n++;
         if(value === "=") {
+            if (!numbers[n-2] || !operator) updateScreen("ERROR");
             operate(operator, numbers[n-2], numbers[n-1]);
             operator = "";
         } else if (operator) {
@@ -58,6 +62,9 @@ function storeDisplayValue(value) {
             displayValue = "";
         }
     } else {
+        if (displayValue.includes(".") && value === "."){
+            return;
+        }
         if(result) {
             displayValue = "";
             result = false;
@@ -87,11 +94,19 @@ function deleteScreen() {
     displayValue = displayValue.slice(0, -1);
 }
 
-function updateScreen() {
+function updateScreen(message) {
     const current = document.querySelector(".current");
-    current.innerHTML = displayValue;
     const history = document.querySelector(".history");
-    history.innerHTML = historyValue;
+    if (message) {
+        current.innerHTML = message;
+    } else {
+        current.innerHTML = displayValue;
+        history.innerHTML = historyValue;
+        if(operator){
+            history.innerHTML += " " + operator;
+        }
+    }
+
 }
 
 const wrapper = document.getElementById("wrapper");
