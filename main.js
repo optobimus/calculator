@@ -22,10 +22,10 @@ function operate(operator, a, b) {
         case "-":
             result = subtract(a, b);
             break;
-        case "*":
+        case "×":
             result = multiply(a, b);
             break;
-        case "/":
+        case "÷":
             result = divide(a, b);
             break;      
     }
@@ -33,20 +33,23 @@ function operate(operator, a, b) {
     updateScreen();
 }
 
-let displayValue = "";
+let displayValue = "", historyValue = "";
 let operator = "";
 let numbers = [], n = 0;
 let result = 0;
 
 function storeDisplayValue(value) {
     if(isNaN(value) && value !== "."){
-        numbers.push(displayValue);
+        numbers.push(+displayValue);
         n++;
         if(value === "=") {
-            operate(operator, numbers[n], numbers[n-1])
+            console.log(operator);
+            operate(operator, numbers[n-2], numbers[n-1])
         }else {
             operator = value;
-            console.log("Not a Number");
+            historyValue = numbers[n-1];
+            updateScreen();
+            displayValue = "";
         }
     } else {
         displayValue += `${value}`;
@@ -62,6 +65,7 @@ function clearScreen() {
     const history = document.querySelector(".history");
     history.innerHTML = "";
     displayValue = "";
+    historyValue = "";
 }
 
 function deleteScreen() {
@@ -73,6 +77,8 @@ function deleteScreen() {
 function updateScreen() {
     const current = document.querySelector(".current");
     current.innerHTML = displayValue;
+    const history = document.querySelector(".history");
+    history.innerHTML = historyValue;
 }
 
 const wrapper = document.getElementById("wrapper");

@@ -22,7 +22,6 @@ body {
 }
 
 .history, .current {
-    border: 1px solid red;
     display: flex;
     justify-content: end;
     align-items: center;
@@ -31,12 +30,12 @@ body {
 
 .current {
     min-height: 60px;
-    font-size: 20px;
+    font-size: 40px;
 }
 
 .history {
     min-height: 30px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .clear, .delete {
@@ -61,4 +60,15 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    margin: 12px;
+    font-size: 20px;
+}
+
+img {
+    height: 20px;
 }
