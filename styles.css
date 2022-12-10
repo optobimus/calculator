@@ -21,6 +21,24 @@ body {
     grid-gap: 10px;
 }
 
+.history, .current {
+    border: 1px solid red;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 8px;
+}
+
+.current {
+    min-height: 60px;
+    font-size: 20px;
+}
+
+.history {
+    min-height: 30px;
+    font-size: 20px;
+}
+
 .clear, .delete {
     grid-column: span 2;
     background-color: bisque;
@@ -36,10 +54,11 @@ body {
 .screen {
     border-radius: 5px;
     background-color: lightgray;
-    text-align: right;
     border: 2px solid black;
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 12px;
     min-height: 100px;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
