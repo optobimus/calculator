@@ -15,7 +15,7 @@ function divide(a, b){
     return a / b;
 }
 
-function operate(operator, a, b) {
+function operate(operator, a, b, value) {
     switch(operator) {
         case "+":
             result = add(a, b);
@@ -30,15 +30,20 @@ function operate(operator, a, b) {
             result = divide(a, b);
             break;      
     }
+    if (value === "=") {
+        historyValue += " " + b + " " + value;
+    } else {
+        historyValue = result + " " + value;
+    }
+
     displayValue = result;
     numbers.push(result);
     n++;
     updateScreen();
-    historyValue = result;
 }
 
 let displayValue = "", historyValue = "";
-let operator;
+let operator = "";
 let numbers = [], n = 0;
 let result, tmp;
 
@@ -49,20 +54,20 @@ function storeDisplayValue(value) {
         n++;
         if(value === "=") {
             if (!numbers[n-2] || !operator) updateScreen("ERROR");
-            operate(operator, numbers[n-2], numbers[n-1]);
+            operate(operator, numbers[n-2], numbers[n-1], value);
             operator = "";
-        } else if (operator) {
-            historyValue = numbers[n-1] + " " + operator;
-            operate(operator, numbers[n-2], numbers[n-1]);
+        } else if (operator !== "") {
+            historyValue = numbers[n-1] + " " + value;
+            operate(operator, numbers[n-2], numbers[n-1], value);
             operator = value;
         }else {
             operator = value;
-            historyValue = numbers[n-1];
+            historyValue = numbers[n-1] + " " + operator;
             updateScreen();
             displayValue = "";
         }
     } else {
-        if (displayValue.includes(".") && value === "."){
+        if (document.querySelector(".current").innerHTML.includes(".") && value === "."){
             return;
         }
         if(result) {
@@ -102,9 +107,6 @@ function updateScreen(message) {
     } else {
         current.innerHTML = displayValue;
         history.innerHTML = historyValue;
-        if(operator){
-            history.innerHTML += " " + operator;
-        }
     }
 
 }
