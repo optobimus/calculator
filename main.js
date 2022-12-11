@@ -31,10 +31,10 @@ function operate(operator, a, b) {
             break;      
     }
     displayValue = result;
-    historyValue = result;
     numbers.push(result);
     n++;
     updateScreen();
+    historyValue = result;
 }
 
 let displayValue = "", historyValue = "";
@@ -52,7 +52,7 @@ function storeDisplayValue(value) {
             operate(operator, numbers[n-2], numbers[n-1]);
             operator = "";
         } else if (operator) {
-            historyValue = numbers[n-1];
+            historyValue = numbers[n-1] + " " + operator;
             operate(operator, numbers[n-2], numbers[n-1]);
             operator = value;
         }else {
