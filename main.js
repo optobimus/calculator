@@ -28,7 +28,13 @@ function operate(operator, a, b, value) {
             break;
         case "÷":
             result = divide(a, b);
-            break;      
+            break;  
+        case "*":
+            result = multiply(a, b);
+            break;
+        case "/":
+            result = divide(a, b);
+            break;    
     }
     if (value === "=") {
         historyValue += " " + b + " " + value;
@@ -52,9 +58,9 @@ function storeDisplayValue(value) {
         
         numbers.push(+displayValue);
         n++;
-        if(value === "=") {
+        if(value === "=" || value === "Enter") {
             if (!numbers[n-2] || !operator) updateScreen("ERROR");
-            operate(operator, numbers[n-2], numbers[n-1], value);
+            operate(operator, numbers[n-2], numbers[n-1], "=");
             operator = "";
         } else if (operator !== "") {
             historyValue = numbers[n-1] + " " + value;
@@ -131,4 +137,24 @@ if(wrapper){
             storeDisplayValue(event.target.innerHTML);
         }
     });
+    wrapper.addEventListener('keydown', (event) => {
+        var name = event.key;
+        var code = event.code;
+
+        //alert(`Key pressed ${name} \r\n Key code value: ${code}`);
+
+        if(code === "Escape" || code === "Backspace") {
+            switch(code) {
+                case "Escape":
+                    clearScreen();
+                    break;
+                case "Backspace":
+                    deleteScreen();
+                    break;
+            }
+        }else if (isFinite(name) || name === "/" || name === "*" || name === "+" || name === "-" || name === "." || name === "=" || name === "Enter"){
+            storeDisplayValue(name);
+        }
+    });
 }
+    
